@@ -3,10 +3,11 @@
 
 import bcrypt
 
+
 def hash_password(password: str) -> bytes:
     """hash a password """
 
-     # Generate a salt
+    # Generate a salt
     salt = bcrypt.gensalt()
 
     hashed_password = bcrypt.hashpw(password.encode(), salt)
