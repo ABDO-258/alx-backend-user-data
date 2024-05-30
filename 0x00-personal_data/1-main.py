@@ -4,7 +4,7 @@ Main file
 """
 
 import logging
-import re
+# import re
 
 RedactingFormatter = __import__('filtered_logger').RedactingFormatter
 
