@@ -4,6 +4,7 @@ module to manage the API authentication.
 """
 from typing import List, TypeVar
 from flask import request
+import fnmatch
 
 
 class Auth:
@@ -16,7 +17,12 @@ class Auth:
             return True
         if path[-1] != "/":
             path += "/"
-        return path not in excluded_paths
+        for pattern in excluded_paths:
+            if pattern[-1] != "/":
+                pattern += "/"
+            if fnmatch.fnmatch(path, pattern):
+                return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """ doc doc doc string """
