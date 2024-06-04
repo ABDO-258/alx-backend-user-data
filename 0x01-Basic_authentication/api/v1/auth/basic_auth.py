@@ -48,7 +48,7 @@ class BasicAuth(Auth):
             return (None, None)
         email_pass = decoded_base64_authorization_header.split(":", 1)
         return email_pass[0], email_pass[1]
-    
+
     def user_object_from_credentials(
             self, user_email: str, user_pwd: str) -> TypeVar('User'):
         """returns the User instance based on his credentials"""
@@ -64,3 +64,20 @@ class BasicAuth(Auth):
             if user.is_valid_password(user_pwd):
                 return user
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """etrieves the User instance for a request"""
+        credentials = self.authorization_header(request)
+        if not credentials:
+            return None
+        encoding = self.extract_base64_authorization_header(credentials)
+        if not encoding:
+            return None
+        decoding = self.decode_base64_authorization_header(encoding)
+        if not decoding:
+            return None
+        email, password = self.extract_user_credentials(decoding)
+        if not email or not password:
+            return None
+        user = self.user_object_from_credentials(email, password)
+        return user
