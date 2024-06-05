@@ -22,7 +22,6 @@ if AUTH_TYPE == "basic_auth":
     auth = BasicAuth()
 
 
-
 @app.before_request
 def before_request() -> str:
     """ before_request handler
@@ -42,6 +41,7 @@ def before_request() -> str:
     if current_user is None:
         abort(403)
     request.current_user = current_user
+
 
 @app.errorhandler(404)
 def not_found(error) -> str:
